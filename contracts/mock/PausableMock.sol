@@ -1,3 +1,5 @@
+
+/**
 pragma solidity ^0.4.13;
 
 import "../Pausable.sol";
@@ -19,3 +21,4 @@ contract PausableMock is Pausable {
 		counters[isPaused()]++;
 	}
 }
+*/
