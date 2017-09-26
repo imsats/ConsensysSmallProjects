@@ -1,9 +1,10 @@
 pragma solidity ^0.4.13;
-import "./Owned.sol";
+import "./interfaces/Owned.sol";
 import "./interfaces/TollBoothHolderI.sol";
 
-contract TollBoothHolder is Owned, TollBoothHolderI {
+contract TollBoothHolder is OwnedI, TollBoothHolderI {
    
+   address owner;
    function TollBoothHolder(){
        owner = msg.sender;
    }
@@ -17,10 +18,10 @@ contract TollBoothHolder is Owned, TollBoothHolderI {
    
     function addTollBooth(address tollBooth)
         public
-        fromOwner()
         returns(bool success){
             require(tollBoothStruct[tollBooth].active);
             require(tollBooth !=0 );
+            require(owner == msg.sender);
             
             
         tollBoothStruct[tollBooth].active = true;
@@ -41,10 +42,11 @@ contract TollBoothHolder is Owned, TollBoothHolderI {
    
     function removeTollBooth(address tollBooth)
         public
-        fromOwner()
         returns(bool success){
            require(tollBoothStruct[tollBooth].active);
            require(tollBooth != 0 );
+           require(owner == msg.sender);
+           
           tollBoothStruct[tollBooth].active == false;
            
               LogTollBoothRemoved(owner,tollBooth);

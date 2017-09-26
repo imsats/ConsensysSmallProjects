@@ -1,9 +1,10 @@
 pragma solidity ^0.4.13;
 import "./interfaces/MultiplierHolderI.sol";
-import "./Owned.sol";
+import "./interfaces/OwnedI.sol";
 
-contract MultiplierHolder is Owned, MultiplierHolderI {
+contract MultiplierHolder is OwnedI, MultiplierHolderI {
   
+  address owner;
     function MultiplierHolder(){
         owner = msg.sender;
     }

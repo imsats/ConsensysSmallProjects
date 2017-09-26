@@ -1,11 +1,12 @@
 pragma solidity ^0.4.13;
 
-import "./Owned.sol";
+import "./interfaces/OwnedI.sol";
 import "./interfaces/TollBoothHolderI.sol";
 import "./interfaces/RoutePriceHolderI.sol";
 
-contract RoutePriceHolder is Owned, TollBoothHolderI, RoutePriceHolderI{
+contract RoutePriceHolder is OwnedI, TollBoothHolderI, RoutePriceHolderI{
     
+    address owner;
     function RoutePriceHolder(){
         owner = msg.sender;
     }
@@ -16,7 +17,7 @@ contract RoutePriceHolder is Owned, TollBoothHolderI, RoutePriceHolderI{
             uint priceWeis;
        bool active;
     }
-     mapping(bytes32=>RoutePrice) public routePrices;
+     mapping(address=>RoutePrice) public routePrices;
   
   
   
@@ -24,7 +25,6 @@ contract RoutePriceHolder is Owned, TollBoothHolderI, RoutePriceHolderI{
             address entryBooth,
             address exitBooth,
             uint priceWeis)
-            fromOwner()
         public
         returns(bool success){
             require( isTollBooth(entryBooth));
@@ -33,6 +33,7 @@ contract RoutePriceHolder is Owned, TollBoothHolderI, RoutePriceHolderI{
             require( entryBooth != 0);
             require( exitBooth != 0);
             require( routePrices[keccak256(entryBooth,exitBooth)].priceWeis != priceWeis);
+            require( owner == msg.sender);
             
             routePrices[keccak256(entryBooth,exitBooth)].entryBooth = entryBooth;
             routePrices[keccak256(entryBooth,exitBooth)].exitBooth = exitBooth;
@@ -40,8 +41,6 @@ contract RoutePriceHolder is Owned, TollBoothHolderI, RoutePriceHolderI{
             routePrices[keccak256(entryBooth,exitBooth)].active = true;
 
             LogRoutePriceSet(owner,entryBooth,exitBooth,priceWeis);
-	
-	    return true;
         }
    
     function getRoutePrice(

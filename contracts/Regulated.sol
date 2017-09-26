@@ -1,6 +1,7 @@
 pragma solidity ^0.4.13;
-import "RegulatorI.sol";
-import "RegulatedI.sol";
+import "./interfaces/RegulatorI.sol";
+import "./interfaces/RegulatedI.sol";
+import "./Regulator.sol";
 
 
 contract Regulated is RegulatedI{
@@ -8,8 +9,8 @@ contract Regulated is RegulatedI{
     address public currentRegulator;
     
     function Regulated(address initialRegulator){
-        require(intialRegulator!=0);
-         cuurentRegulator= new Regulator();     
+        require(initialRegulator!=address(0));
+         currentRegulator= new Regulator();     
     }
     
     function setRegulator(address newRegulator)
@@ -17,7 +18,7 @@ contract Regulated is RegulatedI{
      returns(bool success){
          
         require(currentRegulator==msg.sender);
-        require(newRegulator !=0);
+        require(newRegulator != address(0));
         require(currentRegulator != newRegulator);
         
         currentRegulator = newRegulator;

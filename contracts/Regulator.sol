@@ -1,11 +1,12 @@
 pragma solidity ^0.4.4;
-import "./Owned.sol";
+import "./interfaces/OwnedI.sol";
 import "./interfaces/RegulatorI.sol";
 import "./TollBoothOperator.sol";
 import "./interfaces/TollBoothOperatorI.sol";
 
-contract Regulator is RegulatorI, Owned{
+contract Regulator is RegulatorI, OwnedI{
 
+address owner;
     function Regulator() {
         owner = msg.sender;
     }
@@ -24,11 +25,11 @@ contract Regulator is RegulatorI, Owned{
 
     function setVehicleType(address _vehicle, uint _vehicleType)
     public
-    fromOwner()
     returns(bool success){
        
         require(_vehicle!=0);
         require(vehicles[_vehicle].vehicleType != _vehicleType);
+        require( owner == msg.sender);
        
         vehicles[_vehicle].vehicleType = _vehicleType;
         LogVehicleTypeSet(owner,_vehicle,_vehicleType);
@@ -44,9 +45,9 @@ contract Regulator is RegulatorI, Owned{
     
     function createNewOperator(address _owner, uint _depositWeis)
     public
-    fromOwner()
     returns(TollBoothOperatorI newOperator){
       
+           require( owner == msg.sender);
         require(owner!=_owner);
   
         TollBoothOperatorI c = new TollBoothOperator(true, owner, _depositWeis);
@@ -59,9 +60,11 @@ contract Regulator is RegulatorI, Owned{
     
     function removeOperator(address operator)
     public
-    fromOwner()
     returns(bool success){
+    
+        require( owner == msg.sender);
         require(tollBoothOperatorStruct[operator].active);
+    
         tollBoothOperatorStruct[operator].active = false;
         LogTollBoothOperatorRemoved(msg.sender, operator);
     }

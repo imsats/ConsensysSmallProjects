@@ -18,11 +18,12 @@ contract DepositHolder is OwnedI, DepositHolderI{
     
     function setDeposit(uint _depositWeis)
     public
+    
     returns(bool success){
 
-	require(owner == msg.sender);
         require(_depositWeis!=0);
         require(depositWeis!=_depositWeis);
+        require(owner == msg.sender);
         
         depositWeis = _depositWeis;
         LogDepositSet(owner, _depositWeis);
