@@ -1,7 +1,5 @@
 pragma solidity ^0.4.13;
-
 contract TollBoothOperatorI {
-
     /**
      * This provides a single source of truth for the encoding algorithm.
      * @param secret The secret to be hashed.
@@ -11,7 +9,6 @@ contract TollBoothOperatorI {
         constant
         public
         returns(bytes32 hashed);
-
     /**
      * Event emitted when a vehicle made the appropriate deposit to enter the road system.
      * @param vehicle The address of the vehicle that entered the road system.
@@ -24,7 +21,6 @@ contract TollBoothOperatorI {
         address indexed entryBooth,
         bytes32 indexed exitSecretHashed,
         uint depositedWeis);
-
     /**
      * Called by the vehicle entering a road system.
      * Off-chain, the entry toll booth will open its gate up successful deposit and confirmation
@@ -46,7 +42,6 @@ contract TollBoothOperatorI {
         public
         payable
         returns (bool success);
-
     /**
      * @param exitSecretHashed The hashed secret used by the vehicle when entering the road.
      * @return The information pertaining to the entry of the vehicle.
@@ -63,7 +58,6 @@ contract TollBoothOperatorI {
             address vehicle,
             address entryBooth,
             uint depositedWeis);
-
     /**
      * Event emitted when a vehicle exits a road system.
      * @param exitBooth The toll booth that saw the vehicle exit.
@@ -77,7 +71,6 @@ contract TollBoothOperatorI {
         bytes32 indexed exitSecretHashed,
         uint finalFee,
         uint refundWeis);
-
     /**
      * Event emitted when a vehicle used a route that has no known fee.
      * It is a signal for the oracle to provide a price for the pair.
@@ -89,7 +82,6 @@ contract TollBoothOperatorI {
         bytes32 indexed exitSecretHashed,
         address indexed entryBooth,
         address indexed exitBooth);
-
     /**
      * Called by the exit booth.
      *     It should roll back when the contract is in the `true` paused state.
@@ -104,7 +96,6 @@ contract TollBoothOperatorI {
     function reportExitRoad(bytes32 exitSecretClear)
         public
         returns (uint status);
-
     /**
      * @param entryBooth the entry booth that has pending payments.
      * @param exitBooth the exit booth that has pending payments.
@@ -115,7 +106,6 @@ contract TollBoothOperatorI {
         constant
         public
         returns (uint count);
-
     /**
      * Can be called by anyone. In case more than 1 payment was pending when the oracle gave a price.
      *     It should roll back when the contract is in `true` paused state.
@@ -134,7 +124,6 @@ contract TollBoothOperatorI {
             uint count)
         public
         returns (bool success);
-
     /**
      * @return The amount that has been collected through successful payments. This is the current
      *   amount, it does not reflect historical fees. So this value goes back to zero after a call
@@ -144,7 +133,6 @@ contract TollBoothOperatorI {
         constant
         public
         returns(uint amount);
-
     /**
      * Event emitted when the owner collects the fees.
      * @param owner The account that sent the request.
@@ -153,7 +141,6 @@ contract TollBoothOperatorI {
     event LogFeesCollected(
         address indexed owner,
         uint amount);
-
     /**
      * Called by the owner of the contract to withdraw all collected fees (not deposits) to date.
      *     It should roll back if any other address is calling this function.
@@ -165,7 +152,6 @@ contract TollBoothOperatorI {
     function withdrawCollectedFees()
         public
         returns(bool success);
-
     /**
      * This function overrides the eponymous function of `RoutePriceHolderI`, to which it adds the following
      * functionality:
@@ -185,7 +171,6 @@ contract TollBoothOperatorI {
         public
         returns(bool success);
      */
-
     /*
      * You need to create:
      *

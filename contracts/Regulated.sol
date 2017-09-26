@@ -23,6 +23,7 @@ contract Regulated is RegulatedI{
         
         currentRegulator = newRegulator;
         LogRegulatorSet(currentRegulator,newRegulator);
+return true;
     }
     
     function getRegulator()

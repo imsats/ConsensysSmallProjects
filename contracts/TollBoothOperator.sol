@@ -1,16 +1,17 @@
-pragma solidity ^0.4.4;
-import "./interfaces/OwnedI.sol";
-import "./interfaces/PausableI.sol";
-import "./interfaces/DepositHolderI.sol";
-import "./interfaces/TollBoothHolderI.sol";
-import "./interfaces/MultiplierHolderI.sol";
-import "./interfaces/RoutePriceHolderI.sol";
-import "./interfaces/RegulatedI.sol";
+pragma solidity ^0.4.13;
+
+import "./Owned.sol";
+import "./Pausable.sol";
+import "./DepositHolder.sol";
+import "./TollBoothHolder.sol";
+import "./MultiplierHolder.sol";
+import "./RoutePriceHolder.sol";
+import "./Regulated.sol";
 import "./interfaces/TollBoothOperatorI.sol";
 
-contract TollBoothOperator is OwnedI, PausableI, DepositHolderI, TollBoothHolderI, MultiplierHolderI, RoutePriceHolderI, RegulatedI, TollBoothOperatorI{
-    
-    address owner;
+contract TollBoothOperator is TollBoothOperatorI, Owned, Pausable, DepositHolder, TollBoothHolder, MultiplierHolder, RoutePriceHolder, Regulated{
+
+   address owner;
     bool initialPausedState;
     uint depositWeiValueofTollBoothOperator;
     uint totalCollectedFee;

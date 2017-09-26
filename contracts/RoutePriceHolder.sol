@@ -17,7 +17,7 @@ contract RoutePriceHolder is OwnedI, TollBoothHolderI, RoutePriceHolderI{
             uint priceWeis;
        bool active;
     }
-     mapping(address=>RoutePrice) public routePrices;
+     mapping(bytes32=>RoutePrice) public routePrices;
   
   
   
@@ -41,6 +41,8 @@ contract RoutePriceHolder is OwnedI, TollBoothHolderI, RoutePriceHolderI{
             routePrices[keccak256(entryBooth,exitBooth)].active = true;
 
             LogRoutePriceSet(owner,entryBooth,exitBooth,priceWeis);
+
+return true;
         }
    
     function getRoutePrice(

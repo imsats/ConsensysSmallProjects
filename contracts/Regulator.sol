@@ -1,11 +1,10 @@
-pragma solidity ^0.4.4;
-import "./interfaces/OwnedI.sol";
+pragma solidity ^0.4.13;
+import "./Owned.sol";
 import "./interfaces/RegulatorI.sol";
 import "./TollBoothOperator.sol";
 import "./interfaces/TollBoothOperatorI.sol";
 
-contract Regulator is RegulatorI, OwnedI{
-
+contract Regulator is RegulatorI, Owned{
 address owner;
     function Regulator() {
         owner = msg.sender;
@@ -50,11 +49,11 @@ address owner;
            require( owner == msg.sender);
         require(owner!=_owner);
   
-        TollBoothOperatorI c = new TollBoothOperator(true, owner, _depositWeis);
+        TollBoothOperatorI c =  new TollBoothOperator(true, owner, _depositWeis);
         tollBoothOperatorStruct[_owner].active = true;
     
         LogTollBoothOperatorCreated(msg.sender, _owner, owner, _depositWeis);
-        return(c);
+        return(newOperator);
      
     }
     
@@ -67,7 +66,8 @@ address owner;
     
         tollBoothOperatorStruct[operator].active = false;
         LogTollBoothOperatorRemoved(msg.sender, operator);
-    }
+return true;    
+}
     
     function isOperator(address operator)
     constant
