@@ -5,7 +5,8 @@ import "./TollBoothOperator.sol";
 import "./interfaces/TollBoothOperatorI.sol";
 
 contract Regulator is RegulatorI, Owned{
-address owner;
+     
+     
     function Regulator() {
         owner = msg.sender;
     }
@@ -21,7 +22,6 @@ address owner;
     mapping (address => TollBoothOpertorStruct) public tollBoothOperatorStruct;
   
     TollBoothOpertorStruct[] public tollBoothOperatorList;
-
     function setVehicleType(address _vehicle, uint _vehicleType)
     public
     returns(bool success){
@@ -49,11 +49,11 @@ address owner;
            require( owner == msg.sender);
         require(owner!=_owner);
   
-        TollBoothOperatorI c =  new TollBoothOperator(true, owner, _depositWeis);
+        TollBoothOperatorI c =  new TollBoothOperator(true, _depositWeis,owner);
         tollBoothOperatorStruct[_owner].active = true;
     
         LogTollBoothOperatorCreated(msg.sender, _owner, owner, _depositWeis);
-        return(newOperator);
+        return(c);
      
     }
     
@@ -66,7 +66,7 @@ address owner;
     
         tollBoothOperatorStruct[operator].active = false;
         LogTollBoothOperatorRemoved(msg.sender, operator);
-return true;    
+        return true;    
 }
     
     function isOperator(address operator)

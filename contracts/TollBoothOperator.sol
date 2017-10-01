@@ -1,20 +1,21 @@
 pragma solidity ^0.4.13;
-
 import "./Owned.sol";
 import "./Pausable.sol";
+import "./Regulated.sol";
 import "./DepositHolder.sol";
 import "./TollBoothHolder.sol";
 import "./MultiplierHolder.sol";
 import "./RoutePriceHolder.sol";
-import "./Regulated.sol";
 import "./interfaces/TollBoothOperatorI.sol";
 
-contract TollBoothOperator is TollBoothOperatorI, Owned, Pausable, DepositHolder, TollBoothHolder, MultiplierHolder, RoutePriceHolder, Regulated{
 
-   address owner;
+
+contract TollBoothOperator is Owned, Pausable,Regulated, MultiplierHolder, DepositHolder,TollBoothHolder,RoutePriceHolder, TollBoothOperatorI{
+   
     bool initialPausedState;
     uint depositWeiValueofTollBoothOperator;
     uint totalCollectedFee;
+    address owner;
   
     struct VehicleDetail
     {
@@ -50,7 +51,7 @@ contract TollBoothOperator is TollBoothOperatorI, Owned, Pausable, DepositHolder
         return keccak256(secret);
     }
     
-    function TollBoothOperator(bool _pausedState, uint _depositWeiValue, address _regulator) {
+    function TollBoothOperator(bool _pausedState, uint _depositWeiValue, address _regulator) Pausable(_pausedState) DepositHolder(_depositWeiValue) Regulated(_regulator) {
         require( _depositWeiValue!=0);
         require(_regulator!=0);
         owner = msg.sender;
@@ -241,10 +242,9 @@ return statuss;
             require(msg.sender.send(totalCollectedFeeTemp)) ;
             LogFeesCollected(msg.sender,totalCollectedFee);
             return true;
-
         }
         
-        /*
+        
          function setRoutePrice(
             address entryBooth,
             address exitBooth,
@@ -264,12 +264,11 @@ return statuss;
             routePrices[keccak256(entryBooth,exitBooth)].exitBooth = exitBooth;
             routePrices[keccak256(entryBooth,exitBooth)].priceWeis = priceWeis;
             routePrices[keccak256(entryBooth,exitBooth)].active = true;
-
             LogRoutePriceSet(owner,entryBooth,exitBooth,priceWeis);
             
             
             return true;
-        }*/
+        }
         
 	function kill()
 	{

@@ -1,8 +1,6 @@
 pragma solidity ^0.4.13;
 import "./interfaces/RegulatorI.sol";
 import "./interfaces/RegulatedI.sol";
-import "./Regulator.sol";
-
 
 contract Regulated is RegulatedI{
     
@@ -10,7 +8,7 @@ contract Regulated is RegulatedI{
     
     function Regulated(address initialRegulator){
         require(initialRegulator!=address(0));
-         currentRegulator= new Regulator();     
+         currentRegulator= initialRegulator;     
     }
     
     function setRegulator(address newRegulator)
@@ -30,6 +28,6 @@ return true;
     constant
     public
     returns(RegulatorI regulator){
-        return Regulator(currentRegulator);
+        return RegulatorI(currentRegulator);
     }
 }

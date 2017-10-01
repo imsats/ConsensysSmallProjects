@@ -5,9 +5,9 @@ import "./interfaces/PausableI.sol";
 
 contract Pausable is PausableI, OwnedI{
 	bool public paused;
-	address owner;
+        address owner;
 
-	function Pausable(bool _paused) {
+	function Pausable(bool _paused){
 		owner = msg.sender;
 		paused = _paused;
 	}

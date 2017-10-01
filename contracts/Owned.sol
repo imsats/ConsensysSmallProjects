@@ -2,9 +2,10 @@ pragma solidity ^0.4.4;
 import "./interfaces/OwnedI.sol";
 
 contract Owned is OwnedI{
-	address public owner;
 
-	function Owned() {
+     address owner;
+    	
+      function Owned() {
 		owner = msg.sender;	
 	}
 
@@ -23,7 +24,7 @@ require(newOwner !=0);
 	     return true;
 	 }
     
-     function getOwner() constant public returns(address owner){
+     function getOwner() constant public returns(address _owner){
          return owner;
      }
   

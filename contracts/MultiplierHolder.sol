@@ -4,7 +4,7 @@ import "./interfaces/OwnedI.sol";
 
 contract MultiplierHolder is OwnedI, MultiplierHolderI {
   
-  address owner;
+    address owner;
     function MultiplierHolder(){
         owner = msg.sender;
     }
